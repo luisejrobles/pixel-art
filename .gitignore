@@ -1,0 +1,6 @@
+# Pixelsrc build output
+build/
+
+# OS files
+.DS_Store
+Thumbs.db

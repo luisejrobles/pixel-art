@@ -1,0 +1,40 @@
+<!-- Source: pxl prompts character, pxl 0.3.0 -->
+
+Create a [SIZE]x[SIZE] pixel art character sprite in pixelsrc JSONL format.
+
+Character description:
+- [DESCRIBE CHARACTER: hero, villain, NPC, monster, etc.]
+- [DESCRIBE APPEARANCE: hair color, clothing, accessories]
+- [DESCRIBE STYLE: cute, realistic, retro, etc.]
+
+Requirements:
+- Use semantic token names: skin, hair, eye, shirt, pants, shoes, outline
+- Include "_" mapped to #00000000 for transparent background
+- Use an "outline" color for definition (darker than base colors)
+- Add highlights and shadows for depth
+- Limit palette to 8-12 colors
+- Include "size": [WIDTH, HEIGHT] in sprite definition
+
+Output format:
+1. First line: palette definition with "type": "palette"
+2. Second line: sprite definition with "type": "sprite", "size", and "regions"
+3. Use shape primitives: rect [x, y, w, h], points [[x,y],...], union [...]
+4. Use valid hex colors: #RRGGBB or #RRGGBBAA
+5. Each region needs a "z" value for layering (higher z draws on top)
+
+Example structure:
+{"type":"palette","name":"[NAME]","colors":{"_":"#00000000","skin":"#FFCC99","hair":"#8B4513",...}}
+{"type":"sprite","name":"[NAME]_idle","size":[SIZE,SIZE],"palette":"[NAME]","regions":{
+  "outline":{"points":[[4,2],[11,2],[4,3],[11,3],...],"z":0},
+  "hair":{"rect":[5,2,6,3],"z":1},
+  "skin":{"union":[{"rect":[5,5,6,3]},{"rect":[6,8,4,1]}],"z":1},
+  "eye":{"points":[[6,6],[9,6]],"z":2}
+}}
+
+Shape primitives:
+- rect [x, y, width, height] - rectangular region
+- points [[x1,y1],[x2,y2],...] - individual pixels
+- union [{shape1},{shape2},...] - combine multiple shapes
+- circle [cx, cy, radius] - filled circle
+- ellipse [cx, cy, rx, ry] - filled ellipse
+

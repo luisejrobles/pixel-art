@@ -1,0 +1,54 @@
+<!-- Source: pxl prompts animation, pxl 0.3.0 -->
+
+Create a [SIZE]x[SIZE] pixel art animation in pixelsrc JSONL format.
+
+Animation description:
+- [DESCRIBE SUBJECT: character, object, effect, etc.]
+- [DESCRIBE ACTION: walking, attacking, idle, spinning, etc.]
+- [DESCRIBE FRAME COUNT: 2, 4, 6, 8 frames]
+- [DESCRIBE TIMING: fast, slow, duration in ms]
+
+Requirements:
+- All frames must use the SAME shared palette
+- Keep subject centered and consistent across frames
+- Only animate the parts that move
+- Use meaningful frame names: [name]_1, [name]_2, etc.
+- Include animation object at the end
+- Include "size": [WIDTH, HEIGHT] in each sprite definition
+
+Output format:
+1. First line: shared palette definition
+2. Following lines: sprite frames in order with "regions"
+3. Last line: animation definition linking frames
+4. Use shape primitives: rect, points, union
+
+Example structure:
+{"type":"palette","name":"[NAME]","colors":{"_":"#00000000","body":"#4169E1","limb":"#FFCC99"}}
+{"type":"sprite","name":"[NAME]_1","size":[SIZE,SIZE],"palette":"[NAME]","regions":{
+  "body":{"rect":[4,2,8,8],"z":0},
+  "limb":{"union":[{"rect":[2,6,2,4]},{"rect":[12,6,2,4]}],"z":0}
+}}
+{"type":"sprite","name":"[NAME]_2","size":[SIZE,SIZE],"palette":"[NAME]","regions":{
+  "body":{"rect":[4,2,8,8],"z":0},
+  "limb":{"union":[{"rect":[3,6,2,4]},{"rect":[11,6,2,4]}],"z":0}
+}}
+{"type":"animation","name":"[NAME]_anim","frames":["[NAME]_1","[NAME]_2"],"duration":[MS],"loop":true}
+
+Animation principles:
+- Walk cycle: 4 frames minimum (left, center, right, center)
+- Idle animation: 2-4 frames with subtle movement
+- Attack: 3-5 frames (wind-up, strike, recovery)
+- Spin: 4-8 frames depending on smoothness needed
+- Effects (explosion, sparkle): 4-6 frames, may not loop
+
+Frame timing (duration in ms):
+- Fast action: 50-100ms
+- Normal movement: 100-150ms
+- Slow/relaxed: 200-300ms
+- Idle breathing: 400-600ms
+
+Shape primitives:
+- rect [x, y, width, height] - rectangular region
+- points [[x1,y1],...] - individual pixels
+- union [{shape1},{shape2},...] - combine shapes
+

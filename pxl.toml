@@ -1,0 +1,16 @@
+[project]
+name = "pixel-art"
+version = "0.1.0"
+
+[defaults]
+scale = 2
+padding = 0
+
+[animations]
+sources = ["animations/**"]
+preview = true
+preview_scale = 4
+
+[watch]
+debounce_ms = 100
+clear_screen = true
